@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>canvas</title>
+		<style type="text/css">
+			*{
+				padding: 0px;
+				margin: 0px;
+			}
+			body,html{
+				height: 100%;
+			}
+			.box{
+				height: 100%;
+				width: 300px;
+				background-color: #177cb0;
+				position: absolute;
+			}
+			#can{
+				display: block;
+				position: absolute;
+				right: 0px;
+			}
+			.top{
+				height: 100px;
+				width: 100%;
+				background-color: #177cb0;
+				font-size: 40px;
+				text-align: center;
+				line-height: 100px;
+				color: white;
+				border-bottom: 2px solid gray;
+			}
+			.text{
+				 height: 50px;
+				 width: 80%;
+				 background: green;
+				 border-radius: 15px;
+				 text-align: center;
+				 line-height: 50px;
+				 font-size: 25px;
+				 color: white;
+				 margin: 10px auto;
+				 box-shadow: 0px 0px 4px rgba(0,0,0,0.5);
+				 cursor: pointer;
+				 user-select:none ;
+			}
+			.text:hover{
+				box-shadow: 0px 0px 7px rgba(0,0,0,0.8);
+			}
+			ul{
+				display: none;
+			}
+			li{
+				height: 40px;
+				width: 70%;
+				margin: 10px auto;
+				list-style:none ;
+			}
+			.one{
+				height: 100%;
+				width: 40px;
+				background-color: gray;
+				border-radius:10px 0px 0px 10px;
+				float: left;
+				margin-left: 17px;
+				text-align: center;
+				line-height: 40px;
+				font-size: 20px;
+				color: white;
+			}
+			input{
+				height: 40px;
+				width: 40px;
+				border-radius:0 10px 10px 0px;
+				float: left;
+				border: none;
+				font-size:20px;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="box">
+			<div class="top">折线图</div>
+			<div class="text" id="init">开始绘制</div>
+			<div class="text" id="zoubiao">生成标矢</div>
+			<div class="text" id="input">输入坐标</div>
+			<ul>
+				<li>
+					<div class="one">X</div><input type="text"/>
+					<div class="one">Y</div><input type="text"/>
+				</li>
+				<li>
+					<div class="one">X</div><input type="text"/>
+					<div class="one">Y</div><input type="text"/>
+				</li>
+				<li>
+					<div class="one">X</div><input type="text"/>
+					<div class="one">Y</div><input type="text"/>
+				</li>
+				<li>
+					<div class="one">X</div><input type="text"/>
+					<div class="one">Y</div><input type="text"/>
+				</li>
+				<li>
+					<div class="one">X</div><input type="text"/>
+					<div class="one">Y</div><input type="text"/>
+				</li>
+				<li>
+					<div class="one">X</div><input type="text"/>
+					<div class="one">Y</div><input type="text"/>
+				</li>
+				<li>
+					<div class="one">X</div><input type="text"/>
+					<div class="one">Y</div><input type="text"/>
+				</li>
+				<li>
+					<div class="one">X</div><input type="text"/>
+					<div class="one">Y</div><input type="text"/>
+				</li>
+			</ul>
+			<div class="text" id="draw">绘制图像</div>
+		</div>
+		<canvas id="can"></canvas>
+		<script type="text/javascript">
+			var canvas = document.getElementById('can');
+			var ctx = canvas.getContext("2d")
+			var cw = canvas.width = window.innerWidth-300;
+			var ch = canvas.height=window.innerHeight;
+			   ctx.fillStyle='white';
+			   ctx.fillRect(0,0,cw,ch);
+			var begin = document.getElementById('init');
+			var zuobiao = document.getElementById('zoubiao')
+			var ul = document.getElementsByTagName('ul')[0]
+			var input = document.getElementById('input')
+			var draw = document.getElementById('draw')
+			var lineLength=50;
+			var init= function(){
+				arrX = [];
+				arrY = [];
+				sumX=parseInt(cw/lineLength);
+				sumY=parseInt(ch/lineLength);
+				console.log(sumX,sumY);
+				for(var i=0;i<sumX;i++){
+					arrX.push(i*50)
+				}
+				for(var j=0;j<sumY;j++){
+					arrY.push(j*50)
+				}
+				for(var i=0;i<arrX.length;i++){
+					ctx.beginPath()
+					ctx.setLineDash([1,2])
+					ctx.moveTo(arrX[i]+lineLength,0)
+					ctx.lineTo(arrX[i]+lineLength,ch)
+					ctx.strokeStyle='green'
+					ctx.stroke()
+					ctx.closePath()
+				}
+				for(var i=0;i<arrY.length;i++){
+					ctx.beginPath()
+					ctx.moveTo(0,arrY[i]+lineLength)
+					ctx.lineTo(cw,arrY[i]+lineLength)
+					ctx.strokeStyle='green'
+					ctx.stroke()
+					ctx.closePath()
+				}
+			}
+			var drawzuobiao = function(){
+				X = 3 * lineLength;
+				Y =10 * lineLength;
+				ctx.beginPath()
+				ctx.setLineDash([5,0]);
+				ctx.moveTo(X,Y)
+				ctx.lineTo(X+15*lineLength,Y)
+				ctx.lineTo(X+15*lineLength-10,Y-10)
+				ctx.lineTo(X+15*lineLength,Y)
+				ctx.lineTo(X+15*lineLength-10,Y+10)
+				ctx.strokeStyle='red'
+				ctx.stroke()
+				ctx.closePath()
+				ctx.beginPath()
+				ctx.setLineDash([5,0]);
+				ctx.moveTo(X,Y)
+				ctx.lineTo(X,Y-9*lineLength)
+				ctx.lineTo(X-10,Y-9*lineLength+10)
+				ctx.lineTo(X,Y-9*lineLength)
+				ctx.lineTo(X+10,Y-9*lineLength+10)
+				ctx.strokeStyle='red'
+				ctx.stroke()
+				ctx.closePath()
+				
+				for(var i=1;i<15;i++){
+					ctx.fillStyle='red'
+					ctx.font='20px 微软雅黑'
+					ctx.fillText(i,X+i*lineLength-8,Y+20)
+				}
+				for(var i=1;i<9;i++){
+					ctx.fillStyle='red'
+					ctx.font='20px 微软雅黑'
+					ctx.fillText(i,X-20,Y-i*lineLength+8)
+				}
+			}
+			begin.addEventListener('click',function(){
+				init()
+			})
+			zuobiao.addEventListener('click',function(){
+				drawzuobiao()
+			})
+			input.addEventListener('click',function(){
+				ul.style.display='block'
+			})
+			var drawImg = function(){
+				X = 3 * lineLength;
+				Y =10 * lineLength;
+				ctx.beginPath()
+				ctx.moveTo(X+lineLength*inARR[0][0],Y-lineLength*inARR[0][1])
+				for(var i=1;i<inARR.length;i++){
+					ctx.lineTo(X+lineLength*inARR[i][0],Y-lineLength*inARR[i][1])
+				}
+				ctx.strokeStyle='blue'
+				ctx.stroke()
+				ctx.closePath()
+			}
+			var drawclean = function(){
+				ctx.fillStyle='white';
+			   ctx.fillRect(0,0,cw,ch);
+			   init()
+			   drawzuobiao()
+			}
+			var inARR = []
+			draw.addEventListener('click',function(){
+				if(inARR.length==0){
+					var li = document.getElementsByTagName('li')
+					for(var i=0;i<li.length;i++){
+						var ins = li[i].getElementsByTagName('input');
+						inX = ins[0].value;
+						inY = ins[1].value;
+						if(inX&&inY){
+							inARR[i]=[inX,inY]
+						}
+						ins[0].value=''
+						ins[1].value=''
+					}
+					drawImg()
+				}else{
+					drawclean();
+					var li = document.getElementsByTagName('li')
+					for(var i=0;i<li.length;i++){
+						var ins = li[i].getElementsByTagName('input');
+						inX = ins[0].value;
+						inY = ins[1].value;
+						if(inX&&inY){
+							inARR[i]=[inX,inY]
+						}
+						ins[0].value=''
+						ins[1].value=''
+					}
+					drawImg()
+				}
+			})
+		</script>
+	</body>
+</html>
