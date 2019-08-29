@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="./js/jquery-3.3.1.min.js"></script>
+    <link rel="stylesheet" href="./bootstrap-3.3.7-dist/css/bootstrap.min.css">
+    <script src="./bootstrap-3.3.7-dist/js/bootstrap.js"></script>
+    <style>
+        .a {
+        color: black;
+        position: absolute;
+        top: 0px;
+        right: 0px;
+         }
+        
+        
+        .h1 {
+            position: relative;
+        }
+        .page{
+            position: relative;
+        }
+        .span{
+            position: absolute;
+            right: 0px;
+            top:40%;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="page-header">
+            <h1 class="h1">罗德志的个人博客
+                <small>世界上最帅的人的个人博客</small>
+                <a href="/blog/admin" class="a"><button type="submit" id="denglu">后台管理系统</button></a>
+            </h1>
+            <% var i = 0%>
+            <ul class="list-group">
+                <% data.forEach(function(e){ %>
+                    <% i++ %>
+                    <li class="list-group-item page" data-_id="<%=e._id%>" data-clicks="<%=e.clicks%>">
+                        <a href="/blog/p?_id=<%= e._id %>">
+                            <h3>
+                                <%= e.title %><span class="label label-default span"><%=e.clicks%>   <%= i %></span>
+                            </h3>
+                            
+                        </a>
+                        <p>日期 : 
+                                <%= e.date%>
+                        </p>
+                        <p>作者: 
+                                <%= e.author%>
+                        </p>
+                        <p>
+                            <%= e.intro%>
+                        </p>
+                        <a class="btn btn-default" href="/blog/r?_id=<%=e._id%>" role="button">删除</a>
+                    </li>
+                <% }) %>
+                
+              </ul>
+        </div>
+    </div>
+    <script>
+          var page = $('.page')
+          page.on('click',function(e){
+             var _id = $(this).attr('data-_id')
+             var clicks = $(this).attr('data-clicks')
+             $.ajax({
+                 type : 'get',
+                 url : '/blog/page',
+                 data : { _id : _id,
+                         clicks : clicks
+                },
+                 success : function(e){
+                     console.log(e)
+                 }
+             })
+          })
+    </script>
+</body>
+</html>
